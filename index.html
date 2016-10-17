@@ -3,29 +3,38 @@
   <head>
     <meta charset="utf-8">
     <title>QuakeFinder</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="style.css">
+
   </head>
   <body>
-    <h1>QuakeFinder</h1>
-    <p>
-      What Earthquakes are near you?
-    </p>
-    <form class="location-search" action="#">
-      Location: <input type="text" name="location">
-      <input type="submit" value="Find">
-    </form>
+    <div class="container">
+      <div class="header">
+        <h1>QuakeFinder</h1>
+        <p>
+          What Earthquakes are near you?
+        </p>
+        <form class="location-search" action="#">
+          Location: <input type="text" name="location">
+          <input type="submit" value="Find">
+        </form>
+      </div>
 
-    <div class="details">
-      <h3>Details</h3>
-      <!-- Add Refresh Button -->
-      <p>
-        Time:
-      </p>
-      <p>
-        Magnitude:
-      </p>
+      <div class="details">
+        <h3>Details</h3>
+        <!-- Add Refresh Button -->
+        <p>
+          Time:
+        </p>
+        <p>
+          Magnitude:
+        </p>
+      </div>
+
+      <!-- Map? -->
     </div>
-
-    <!-- Map? -->
-
   </body>
 </html>
