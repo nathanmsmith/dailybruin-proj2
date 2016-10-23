@@ -14,3 +14,8 @@ Other than that, I tried to make Javascript (or specifically ES6) the thing of t
 As for things in the next training, I'm down to learn anything. I'm not sure if this is out of the scope of training but going into some backend stuff like Node or Django would be really cool to do.
 
 
+## Report (Colin)
+
+Implemented the searching feature in javascript. Used Google Maps API.
+
+Too tired to write anything else.
