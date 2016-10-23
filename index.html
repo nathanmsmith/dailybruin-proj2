@@ -30,17 +30,22 @@
         <h3>Details</h3>
         <!-- Add Refresh Button -->
         <p>
-          Time:
+          Time: <span id="time"></span>
         </p>
         <p>
-          Magnitude:
+          Magnitude: <span id="magnitude"></span>
         </p>
       </div>
 
-      <!-- Map? -->
+      <div class="map-wrapper">
+        <div id="map">
+        </div>
+      </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="script.js"></script>
+    <!-- Colin's API_KEY -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCM4EGz-6TaFS4rXJNJKn1OyR2fRnph_lQ&callback=initMap" async defer></script>
   </body>
 </html>
