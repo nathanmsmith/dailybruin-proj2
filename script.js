@@ -68,16 +68,24 @@ function findNear(address) {
 
     for (let i = 0; i < geojsonCache.features.length; i++) {
       var curr_eq = geojsonCache.features[i];
-      var eq = new google.maps.LatLng(curr_eq.geometry.coordinates[1],
-                                      curr_eq.geometry.coordinates[0]);
+      var eqLatLng = new google.maps.LatLng(curr_eq.geometry.coordinates[1],
+                                            curr_eq.geometry.coordinates[0]);
       if (google.maps.geometry
-          .spherical.computeDistanceBetween(locLatLng, eq) < CLOSE) {
+          .spherical.computeDistanceBetween(locLatLng, eqLatLng) < CLOSE) {
         console.log('earthquake found');
         // write to map
         var map = new google.maps.Map(document.getElementById('map'), {
-          center: eq,
+          center: eqLatLng,
           scrollwheel: false,
           zoom: 8
+        });
+        var marker_loc = new google.maps.Marker({
+          position: locLatLng,
+          map: map
+        });
+        var marker_eq = new google.maps.Marker({
+          position: eqLatLng,
+          map: map
         });
 
         $("#title").html(curr_eq.properties.title);
