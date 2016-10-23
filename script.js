@@ -9,20 +9,10 @@ $(document).ready(() => {
     event.preventDefault();
     const location = $('input:first').val();
     console.log(`Sumbitted! Location: ${location}`);
-    findNear(location);
-  });
-
-  // not implemented
-  $('.geolocation-search').click(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const pos = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-        console.log(`position: ${pos}`);
-      });
-    }
+    if (location)
+      findNear(location);
+    else
+      findCurrent();
   });
 
   $.ajax({
@@ -44,8 +34,26 @@ function initMap() {
     // los angeles
     center: {lat: 34.03, lng: -118.15},
     scrollwheel: false,
+    animation: google.maps.Animation.DROP,
     zoom: 8
   });
+}
+
+function findCurrent() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      console.log(`position: ${pos}`);
+
+      var posLatLng = new google.maps.LatLng(pos.lat, pos.lng);
+      updateMap(posLatLng);
+    });
+  } else {
+    alert('location service unavailable');
+  }
 }
 
 function findNear(address) {
@@ -65,39 +73,50 @@ function findNear(address) {
 
     var loc = results[0].geometry.location;
     var locLatLng = new google.maps.LatLng(loc.lat, loc.lng);
+    updateMap(locLatLng);
 
-    for (let i = 0; i < geojsonCache.features.length; i++) {
-      var curr_eq = geojsonCache.features[i];
-      var eqLatLng = new google.maps.LatLng(curr_eq.geometry.coordinates[1],
-                                            curr_eq.geometry.coordinates[0]);
-      if (google.maps.geometry
-          .spherical.computeDistanceBetween(locLatLng, eqLatLng) < CLOSE) {
-        console.log('earthquake found');
-        // write to map
-        var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: (eqLatLng.lat()+locLatLng.lat())/2,
-                   lng: (eqLatLng.lng()+locLatLng.lng())/2},
-          scrollwheel: false,
-          zoom: 8
-        });
-        var marker_loc = new google.maps.Marker({
-          position: locLatLng,
-          map: map
-        });
-        var marker_eq = new google.maps.Marker({
-          position: eqLatLng,
-          map: map
-        });
-
-        $("#title").html(curr_eq.properties.title);
-        $("#status").html(curr_eq.properties.status);
-        $('#time').html(new Date(curr_eq.properties.time));
-        $("#magnitude").html(curr_eq.properties.mag);
-        $("#depth").html(curr_eq.geometry.coordinates[2]);
-        break;
-      }
-    }
   }).fail(() => {
     alert("fail to load geocode");
   });
+}
+
+function updateMap(locLatLng) {
+  var hasEarchQuake = false;
+  for (let i = 0; i < geojsonCache.features.length; i++) {
+    var curr_eq = geojsonCache.features[i];
+    var eqLatLng = new google.maps.LatLng(curr_eq.geometry.coordinates[1],
+                                          curr_eq.geometry.coordinates[0]);
+    if (google.maps.geometry
+        .spherical.computeDistanceBetween(locLatLng, eqLatLng) < CLOSE) {
+
+      hasEarchQuake = true;
+      console.log('earthquake found');
+      // write to map
+      var map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: (eqLatLng.lat()+locLatLng.lat())/2,
+                 lng: (eqLatLng.lng()+locLatLng.lng())/2},
+        scrollwheel: false,
+        animation: google.maps.Animation.DROP,
+        zoom: 8
+      });
+      var marker_loc = new google.maps.Marker({
+        position: locLatLng,
+        map: map
+      });
+      var marker_eq = new google.maps.Marker({
+        position: eqLatLng,
+        map: map
+      });
+
+      $("#title").html(curr_eq.properties.title);
+      $("#status").html(curr_eq.properties.status);
+      $('#time').html(new Date(curr_eq.properties.time));
+      $("#magnitude").html(curr_eq.properties.mag);
+      $("#depth").html(curr_eq.geometry.coordinates[2]);
+      break;
+    }
+  }
+
+  if (!hasEarchQuake)
+    alert('no earthquakes near you');
 }
