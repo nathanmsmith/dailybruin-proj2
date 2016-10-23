@@ -2,6 +2,7 @@
 
 var geojsonCache;
 const URL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson";
+const CLOSE = 500000;
 
 $(document).ready(() => {
   $('.location-search').submit((event) => {
@@ -40,6 +41,7 @@ $(document).ready(() => {
 
 function initMap() {
   var map = new google.maps.Map(document.getElementById('map'), {
+    // los angeles
     center: {lat: 34.03, lng: -118.15},
     scrollwheel: false,
     zoom: 8
@@ -62,11 +64,29 @@ function findNear(address) {
     }
 
     var location = results[0].geometry.location;
+    var locLatLng = new google.maps.LatLng(location.lat, location.lng);
+
+    for (let i = 0; i < geojsonCache.features.length; i++) {
+      var curr_eq = geojsonCache.features[i];
+      var eq = new google.maps.LatLng(curr_eq.lat,
+                                      curr_eq.lng);
+      if (google.maps.geometry.
+          spherical.computeDistanceBetween(location,eq) < CLOSE) {
+        // write to map
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: eq,
+          scrollwheel: false,
+          zoom: 8
+        });
+
+        $("#title").html(curr_eq.properties.title);
+        $("#status").html(curr_eq.properties.status);
+        $('#time').html(new Date(curr_eq.properties.time));
+        $("#magnitude").html(curr_eq.properties.mag);
+        break;
+      }
+    }
   }).fail(() => {
     alert("fail to load geocode");
   });
-}
-
-function distance() {
-  google.maps.geometry.spherical.computeDistanceBetween;
 }
