@@ -70,8 +70,9 @@ function findNear(address) {
       var curr_eq = geojsonCache.features[i];
       var eq = new google.maps.LatLng(curr_eq.lat,
                                       curr_eq.lng);
-      if (google.maps.geometry.
-          spherical.computeDistanceBetween(locLatLng, eq) < CLOSE) {
+      if (google.maps.geometry
+          .spherical.computeDistanceBetween(locLatLng, eq) < CLOSE) {
+        console.log('earthquake found');
         // write to map
         var map = new google.maps.Map(document.getElementById('map'), {
           center: eq,
