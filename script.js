@@ -24,7 +24,15 @@ $(document).ready(() => {
   });
 
   $.ajax({
-    url: URL
+    url: URL,
+    type: "GET",
+    dataType : "json"
+  }).done((json) => {
+    geojsonCache = json;
+  }).fail(() => {
+    console.log("fail to acquire earthquakes data");
+  }).always(() => {
+    console.log("try loading geojson");
   });
 });
 
