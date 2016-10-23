@@ -63,15 +63,15 @@ function findNear(address) {
       return;
     }
 
-    var location = results[0].geometry.location;
-    var locLatLng = new google.maps.LatLng(location.lat, location.lng);
+    var loc = results[0].geometry.location;
+    var locLatLng = new google.maps.LatLng(loc.lat, loc.lng);
 
     for (let i = 0; i < geojsonCache.features.length; i++) {
       var curr_eq = geojsonCache.features[i];
       var eq = new google.maps.LatLng(curr_eq.lat,
                                       curr_eq.lng);
       if (google.maps.geometry.
-          spherical.computeDistanceBetween(location,eq) < CLOSE) {
+          spherical.computeDistanceBetween(locLatLng, eq) < CLOSE) {
         // write to map
         var map = new google.maps.Map(document.getElementById('map'), {
           center: eq,
