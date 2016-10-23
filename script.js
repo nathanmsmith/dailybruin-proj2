@@ -75,7 +75,8 @@ function findNear(address) {
         console.log('earthquake found');
         // write to map
         var map = new google.maps.Map(document.getElementById('map'), {
-          center: eqLatLng,
+          center: {lat: (eqLatLng.lat()+locLatLng.lat())/2,
+                   lng: (eqLatLng.lng()+locLatLng.lng())/2},
           scrollwheel: false,
           zoom: 8
         });
