@@ -34,7 +34,6 @@ function initMap() {
     // los angeles
     center: {lat: 34.03, lng: -118.15},
     scrollwheel: false,
-    animation: google.maps.Animation.DROP,
     zoom: 8
   });
 }
@@ -46,7 +45,7 @@ function findCurrent() {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
-      console.log(`position: ${pos}`);
+      console.log(`position: {lat: ${pos.lat}, lng: ${pos.lng}}`);
 
       var posLatLng = new google.maps.LatLng(pos.lat, pos.lng);
       updateMap(posLatLng);
@@ -96,16 +95,25 @@ function updateMap(locLatLng) {
         center: {lat: (eqLatLng.lat()+locLatLng.lat())/2,
                  lng: (eqLatLng.lng()+locLatLng.lng())/2},
         scrollwheel: false,
-        animation: google.maps.Animation.DROP,
         zoom: 8
       });
       var marker_loc = new google.maps.Marker({
         position: locLatLng,
+        animation: google.maps.Animation.DROP,
+        icon: 'https://maps.google.com/intl/en_us/mapfiles/ms/micons/green-dot.png',
         map: map
       });
       var marker_eq = new google.maps.Marker({
         position: eqLatLng,
+        animation: google.maps.Animation.DROP,
         map: map
+      });
+
+      var infowindow = new google.maps.InfoWindow({
+        content: curr_eq.properties.title
+      });
+      marker_eq.addListener('click', () => {
+        infowindow.open(map, marker_eq);
       });
 
       $("#title").html(curr_eq.properties.title);

@@ -5,7 +5,8 @@
 /* google map */
 
 .map-wrapper {
-  margin: 10px;
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 
 #map {
